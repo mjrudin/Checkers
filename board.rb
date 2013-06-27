@@ -1,3 +1,4 @@
+#REV: I think this should read # -*- encoding: utf-8 -*-
 # -*- coding: utf-8 -*-
 
 require 'colored'
@@ -11,7 +12,8 @@ class Board
     @white_count = 12
     @black_count = 12
 	end
-
+  
+  #REV: the attr_accessor creates this automatically
   def board
     @board
   end
@@ -19,6 +21,10 @@ class Board
 #Initial board setup
   def setup_board
     @board = Array.new(8) { Array.new(8) }
+    
+    #REV: you don't need to set @board to equal the return value of setup_pieces
+    #since setup_pieces alters the @board object itself and doesn't seem to return
+    #anything.
     @board = setup_pieces
   end
 
@@ -82,7 +88,9 @@ class Board
 
     return false
   end
-
+  
+  #REV: This looks very similar to valid_capture?. Maybe you could find a way to
+  #combine them into one method.
   def valid_non_capture?(current_location, desired_location)
     piece_type = @board[current_location[0]][current_location[1]].type
     x2, y2 = desired_location
@@ -138,6 +146,8 @@ class Board
   def can_capture?(current_location, desired_location)
     x1, y1 = current_location
     x2, y2 = desired_location
+    
+    #REV: This is clever. Nice job!
     capt_x = x1 + (x2 <=> x1)
     capt_y = y1 + (y2 <=> y1)
 
@@ -156,6 +166,8 @@ class Board
 
   def capture_piece(capt_x, capt_y)
     if @board[capt_x][capt_y].color == :white
+      
+      #REV: you can use -= here.
       @white_count = @white_count - 1
     else
       @black_count = @black_count - 1
@@ -167,6 +179,7 @@ class Board
 
 #Display methods and helpers
   def display_board
+    #REV: you can use a range to create the numbers array (0..7).to_a
     bottom_numbers = [0,1,2,3,4,5,6,7]
     @board.each_with_index do |row, index|
       puts "#{index} #{formatted_row(row,index)}"

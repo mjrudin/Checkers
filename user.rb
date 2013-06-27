@@ -8,6 +8,9 @@ class User
 
   def initialize(color, board_object)
     @color = color
+    
+    #REV: You could define [] in the Board class so that you can access the pieces
+    #directly without having to create a separate @board variable.
     @board_object = board_object
     @board = @board_object.board
   end
@@ -15,6 +18,8 @@ class User
 #PROMPT AND GET
   def get_current
     puts "#{color.capitalize}, select a piece (in the form ROW COL)."
+    
+    #REV: You can ensure that you get numbers back by using scan with \d in your regexp
     input = gets.chomp.downcase.split(/\s*/)
     current_location = input.map {|el| el.to_i}
     our_piece?(current_location)
@@ -82,6 +87,8 @@ end
 
   def move_on_board?(desired_location)
     x,y = desired_location
+    
+    #REV: You can use the between?(0, 7) to do this.
     if x < 0 || x > 7 || y < 0 || y > 7
       raise "\n* Invalid Move! You must move to a location on the board. *"
     end
